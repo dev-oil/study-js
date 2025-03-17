@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script>
+      // 1. ajax
+      // ajax란? 비동기적 웹 서비스를 개발할 때 사용하는 기법
+      // 쉽게 말해 페이지 이동 없이 서버에 요청을 보내고 응답을 받는 기술
+
+      // promise
+      axios
+        .get('https://www.zerocho.com/api/get')
+        .then((result) => {
+          console.log(result);
+          console.log(result.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      // async / await
+      // get
+      (async () => {
+        try {
+          const result = await axios.get('https://www.zerocho.com/api/get');
+          console.log(result);
+          console.log(result.data);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+
+      // post
+      async () => {
+        try {
+          const result = await axios.post(
+            'https://www.zerocho.com/api/post/json',
+            {
+              name: 'sonny',
+              birth: 1992,
+            }
+          );
+          console.log(result);
+          console.log(result.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    </script> -->
+    <!-- <script>
+      // 2. FormData
+      // FormData? HTML form 태그의 데이터를 동적으로 제어할 수 있는 기능.
+      // 주로 AJAX와 함께 사용됨.
+
+      // 만들기
+      const formData = new FormData();
+
+      // 키 및 값 추가
+      formData.append('name', 'sonny');
+      formData.append('item', 'ball');
+      formData.append('item', 'number 7');
+
+      // 가지고 있는지 check / 가져오기 / 전부 가져오기
+      console.log(formData.has('item')); // true
+      console.log(formData.get('item')); // ball
+      console.log(formData.getAll('item')); // ['ball', 'number 7']
+
+      // 키 추가 (key, value 형식 저장 가능)
+      formData.append('test', ['hi', 'sonny']);
+      console.log(formData.get('test')); // hi,sonny
+
+      // 키 삭제
+      formData.delete('test');
+      console.log(formData.get('test')); // null
+
+      // 키 수정
+      formData.set('item', 'korea best player');
+      console.log(formData.getAll('item')); // ['korea best player']
+
+      // 마무리 - axios로 폼 데이터를 서버에 보내면 됨
+      (async () => {
+        try {
+          const formData = new FormData();
+          formData.append('name', 'sonny');
+          formData.append('birth', 1992);
+          const result = await axios.post(
+            'https://www.zerocho.com/api/post/formdata',
+            formData
+          ); // 두 번째 인수에 데이터를 넣어 보내기
+          console.log(result);
+          console.log(result.data);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    </script> -->
+    <!-- <script>
+      // 3. encodeURIComponent, decodeURI
+      // 서버가 한글 주소 이해 못할 때, window 객체의 메서드인 encodeURIComponent 메서드를 사용함
+
+      (async () => {
+        try {
+          const result = await axios.get(
+            `https://www.zerocho.com/api/search/${encodeURIComponent('노드')}`
+          );
+          console.log(result);
+          console.log(result.data);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    </script> -->
+
+    <!-- 4. 데이터 속성과 dataset -->
+    <!-- 프런트엔드에 데이터를 내려보낼 때 첫 번째로 고려할 점은 보안. 민감한 데이터는 절대 내려보내면 X -->
+    <!-- HTML과 관련된 데이터를 저장하는 공식적인 방법이 바로 데이터 속성(data attribute) -->
+    <!-- 나중에 이 데이터 들을 사용해 서버에 요청을 보내게 됨 -->
+
+    <!-- 데이터 속성의 장점?  -->
+    <!-- JS 로 쉽게 접근할 수 있음! -->
+    <ul>
+      <li data-id="1" data-user-job="programmer">devoil</li>
+      <li data-id="2" data-user-job="marketer">dragon</li>
+      <li data-id="3" data-user-job="footballplayer">sonny</li>
+    </ul>
+    <script>
+      console.log(document.querySelector('li').dataset); // {id: '1', userJob: 'programmer'}
+    </script>
+  </body>
+</html>
