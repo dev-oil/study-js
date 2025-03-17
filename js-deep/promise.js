@@ -18,12 +18,16 @@
 
 class MyPromise {
   constructor(executor) {
-    this.value = undefined; // resolve된 값 저장
-    this.isResolved = false; // resolve가 호출 되었는지 체크
+    this.value = undefined;
+    this.isResolved = false;
+    this.thenCallback = null;
 
     const resolve = (value) => {
       this.value = value;
       this.isResolved = true;
+      if (this.thenCallback) {
+        this.thenCallback(value);
+      }
     };
 
     executor(resolve); // 실행
@@ -31,14 +35,18 @@ class MyPromise {
 
   then(callback) {
     if (this.isResolved) {
-      callback(this.value);
+      callback(this.value); // 이미 resolve된 경우 즉시 실행
+    } else {
+      this.thenCallback = callback; // 나중에 실행할 콜백 저장
     }
   }
 }
 
 // 실행 예제
 const x = new MyPromise((resolve) => {
-  resolve('성공!!!');
+  setTimeout(() => resolve('🎉 비동기 성공!'), 3000);
 });
 
-x.then((result) => console.log(result));
+setTimeout(() => {
+  x.then((result) => console.log(result));
+}, 2000);
