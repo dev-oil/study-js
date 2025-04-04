@@ -120,6 +120,7 @@ class MyPromise {
   }
 }
 
+// ===================== 기본 프라미스 예제 ================
 // const successPromise = new MyPromise((resolve) => {
 //   setTimeout(() => resolve('성공!'), 2000); // 2초 후 성공
 // });
@@ -132,6 +133,7 @@ class MyPromise {
 
 // console.log('3. 실행 끝');
 
+// ===================== 체이닝 + 실패 프라미스 예제 ================
 // const failPromise = new MyPromise((resolve, reject) => {
 //   setTimeout(() => {
 //     console.log('2초 후 reject 호출');
@@ -150,3 +152,25 @@ class MyPromise {
 //   });
 
 // console.log('프로미스 생성완료');
+
+// ===================== 체이닝 2개 이상 프라미스 예제 ================
+// const promise = new MyPromise((resolve, reject) => {
+//   console.log('1. executor 실행');
+//   setTimeout(() => {
+//     console.log('2. 1초 후 resolve 호출');
+//     resolve(1);
+//   }, 1000);
+// });
+
+// promise
+//   .then((value) => {
+//     console.log('3. 첫 번째 then: ', value);
+//     return value + 1;
+//   })
+//   .then((value) => {
+//     console.log('4. 두 번째 then: ', value);
+//     return value + 1;
+//   })
+//   .then((value) => {
+//     console.log('5. 세 번째 then: ', value);
+//   });
