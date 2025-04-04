@@ -42,7 +42,6 @@ class MyPromise {
       if (this.state === 'pending') {
         this.state = 'rejected';
         this.value = reason;
-
         this.onRejectedCallbacks.forEach((callback) => {
           try {
             callback(this.value);
@@ -60,12 +59,14 @@ class MyPromise {
     }
   }
 
-  then(onFulfilled) {
+  then(onFulfilled, onRejected) {
     return new MyPromise((resolve, reject) => {
-      const handleCallback = () => {
+      const handleFulfilled = () => {
         try {
-          const result = onFulfilled(this.value);
-
+          const result =
+            typeof onFulfilled === 'function'
+              ? onFulfilled(this.value)
+              : this.value;
           if (result instanceof MyPromise) {
             result.then(resolve).catch(reject);
           } else {
@@ -76,10 +77,25 @@ class MyPromise {
         }
       };
 
+      const handleRejected = () => {
+        try {
+          const result =
+            typeof onRejected === 'function'
+              ? onRejected(this.value)
+              : this.value;
+          reject(result);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
       if (this.state === 'fulfilled') {
-        handleCallback();
-      } else if (this.state === 'pending') {
-        this.onFulfilledCallbacks.push(handleCallback);
+        handleFulfilled();
+      } else if (this.state === 'rejected') {
+        handleRejected();
+      } else {
+        this.onFulfilledCallbacks.push(handleFulfilled);
+        this.onRejectedCallbacks.push(handleRejected);
       }
     });
   }
@@ -118,6 +134,7 @@ class MyPromise {
 
 // const failPromise = new MyPromise((resolve, reject) => {
 //   setTimeout(() => {
+//     console.log('2초 후 reject 호출');
 //     reject('❌ 실패');
 //   }, 2000);
 // });
@@ -126,30 +143,10 @@ class MyPromise {
 
 // failPromise
 //   .then((value) => {
-//     console.log('이건 성공:', value);
+//     console.log('then 실행:', value);
 //   })
 //   .catch((error) => {
-//     console.log('캐치가 실행이 안됨요 ㅠㅠㅠㅠㅠ:', error);
+//     console.log('catch 실행:', error);
 //   });
 
-// console.log('프로미스 생성완');
-
-// =============================== 원래 프로미스요,, ===============================
-
-// const failPromise = new Promise((resolve, reject) => {
-//   setTimeout(() => {
-//     reject('❌ 실패..');
-//   }, 2000);
-// });
-
-// console.log('🚨 초기 상태: pending');
-
-// failPromise
-//   .then((value) => {
-//     console.log('이건 성공:', value);
-//   })
-//   .catch((error) => {
-//     console.log('캐치가 실행됨:', error);
-//   });
-
-// console.log('프로미스 생성 완료');
+// console.log('프로미스 생성완료');
